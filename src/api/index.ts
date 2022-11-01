@@ -1,8 +1,8 @@
 import {doc, getDocs, getDoc, updateDoc, setDoc} from 'firebase/firestore';
 import {collectionRef, dataBase, collectionName} from '../firebase';
 import {ChatType, IChats} from '../types';
-import Helpers from '../src/utils/helpers';
-import Constants from '../src/utils/constants';
+import Helpers from '../utils/helpers';
+import Constants from '../utils/constants';
 
 const getCollection = async () => {
 	try {

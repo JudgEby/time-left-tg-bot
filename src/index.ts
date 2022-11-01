@@ -4,13 +4,14 @@ import 'dotenv/config';
 import {format} from 'date-fns';
 import BotActions from './botActions'
 import Helpers from './utils/helpers';
-import Api from '../api'
-import { ChatType } from '../types';
+import Api from './api'
+import { ChatType } from './types';
 import Constants from './utils/constants';
 
 
 const bot = new Telegraf(process.env.BOT_TOKEN || '');
 bot.start((ctx: Context) => console.log(ctx.message));
+// bot.help((ctx: Context) => console.log(ctx.message));
 
 const checkFunc = async () => {
 	const checkInterval = Number(process.env.CHECK_INTERVAL) || 10000
@@ -39,7 +40,6 @@ const checkFunc = async () => {
 
 						//sort and delete past events
 						const sortedEvents = Helpers.sortAndDeleteEvents(events)
-
 						//send events to chat
 						const eventsMessage = upcomingOnly ? Helpers.createNearestMessage(sortedEvents) : Helpers.createMessage(sortedEvents)
 
@@ -153,7 +153,6 @@ bot.command('add', async (ctx: Context) => {
 		const chatId = ctx.chat?.id
 		// @ts-ignore
 		const userMessage = ctx.message?.text || ''
-		console.log('userMessage', userMessage)
 		const userMessageId = ctx.message?.message_id
 
 		if (chatId && userMessage && userMessageId) {
@@ -166,7 +165,6 @@ bot.command('add', async (ctx: Context) => {
 			//delete old events message
 
 			const chatFromFB = await Api.getChat(String(chatId))
-			console.log('chatFromFB', chatFromFB)
 
 			let chatData: ChatType = chatFromFB || { events: [] }
 
@@ -190,9 +188,7 @@ bot.command('add', async (ctx: Context) => {
 
 
 			//send events
-			console.log('before eventsMessage')
 			const eventsMessage = Helpers.createMessage(chatData.events)
-			console.log('eventsMessage')
 
 			const botAnswer = await BotActions.sendMarkdownMessage(bot, chatId, eventsMessage)
 

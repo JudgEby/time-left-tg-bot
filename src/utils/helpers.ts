@@ -1,4 +1,4 @@
-import {EvensType, EventType, ThrowErrorType} from '../../types';
+import {EvensType, EventType, ThrowErrorType} from '../types';
 import {getTime, isAfter, isBefore, isPast, parse, isToday, isTomorrow} from 'date-fns';
 import emoji from 'node-emoji'
 import Constants from './constants';
@@ -132,7 +132,7 @@ const sortEventsByDates = (events: EvensType): EvensType => {
 
 		const dateSeparatedArr = event.date.split('.')
 		if (dateSeparatedArr.length === 3) {
-			return isBefore(new Date(), parse(event.date, 'dd.MM.yyyy', new Date()))
+			return !isBefore(new Date().getTime(), parse(event.date, 'dd.MM.yyyy', new Date()).getTime())
 		}
 		return true
 	})
